@@ -1,4 +1,5 @@
 #include "BST.h"
+#include <iostream>
 
 int main() {
   BST<int>* bst = new BST<int>();
@@ -9,8 +10,13 @@ int main() {
   bst->insert(5);
   bst->insert(4);
   bst->print();
-  bst->remove(3);
+  std::cout << "\n";
+  bst->treePrint();
+  bst->remove(5);
+  bst->remove(4);
   bst->print();
+  std::cout <<"\n";
+  bst->treePrint();
 
 
 }

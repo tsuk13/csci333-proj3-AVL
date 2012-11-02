@@ -83,8 +83,21 @@ void BST<T>::print() {
 
 template <typename T>
 void BST<T>::treePrint(){
-  traversalPrint(root);
+  std::cout << depth(root, 0) << "\n";
 }
+
+template <typename T>
+int BST<T>::depth(Node<T>* r, int curDepth){
+  if(r == 0)
+    return curDepth;
+  int lc = depth(r->getLeftChild(), curDepth + 1);
+  int rc = depth(r->getRightChild(), curDepth + 1);
+  if(rc >= lc)
+    return rc;
+  else
+    return lc;
+}
+  
 
 template <typename T>
 void BST<T>::traversalPrint(Node<T>* root) {

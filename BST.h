@@ -9,6 +9,7 @@ class BST {
  private:
   Node<T>* root;
   void traversalPrint(Node<T>* root);
+  int depth(Node<T>* r, int curDepth);
 
  public:
   BST<T>();
