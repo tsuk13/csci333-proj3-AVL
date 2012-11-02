@@ -84,6 +84,7 @@ void BST<T>::print() {
 template <typename T>
 void BST<T>::treePrint(){
   std::cout << depth(root, 0) << "\n";
+  std::cout << twoPow(depth(root, 0)) << "\n";
 }
 
 template <typename T>
@@ -97,7 +98,14 @@ int BST<T>::depth(Node<T>* r, int curDepth){
   else
     return lc;
 }
-  
+
+template <typename T>
+int BST<T>::twoPow(int x){
+  if(x == 0)
+    return 1;
+  else
+    return 2 * twoPow(x - 1);
+}
 
 template <typename T>
 void BST<T>::traversalPrint(Node<T>* root) {
