@@ -82,6 +82,11 @@ void BST<T>::print() {
 }
 
 template <typename T>
+void BST<T>::treePrint(){
+  traversalPrint(root);
+}
+
+template <typename T>
 void BST<T>::traversalPrint(Node<T>* root) {
   if(root != 0) {
     traversalPrint(root->getLeftChild());
