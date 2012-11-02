@@ -1,5 +1,7 @@
 #include "BST.h"
 #include <iostream>
+#include <list>
+using std::list;
 
 template <typename T>
 BST<T>::BST() {
@@ -83,8 +85,43 @@ void BST<T>::print() {
 
 template <typename T>
 void BST<T>::treePrint(){
-  std::cout << depth(root, 0) << "\n";
-  std::cout << twoPow(depth(root, 0)) << "\n";
+  int size = depth(root, 0);
+  list<Node<T>*>** alNode = new list<Node<T>*>*[size];
+  for(int i = 0; i < size; i++){
+    alNode[i] = new list<Node<T>*>();
+  }
+  list<Node<T>*>* q = new list<Node<T>*>();
+  list<int>* l = new list<int>();
+  //store it all
+  q->push_back(root);
+  l->push_back(0);
+  for(int curLevel = l->front(); curLevel < size; curLevel = l->front()){
+    l->pop_front();
+    Node<T>* curNode = (Node<T>*) q->front();
+    q->pop_front();
+    alNode[curLevel]->push_back(curNode);
+    if( curNode == 0){
+      q->push_back(curNode);
+      q->push_back(curNode);
+    }
+    else {
+      q->push_back(curNode->getLeftChild());
+      q->push_back(curNode->getRightChild());
+    }
+    l->push_back(curLevel + 1);
+    l->push_back(curLevel + 1);
+  }
+  //print
+  for(int i = 0; i < size; i++){
+    while(!alNode[i]->empty()){
+      if(alNode[i]->front() == 0)
+        std::cout << "X ";
+      else
+        std::cout << alNode[i]->front()->getValue() << " ";
+      alNode[i]->pop_front();
+    }
+    std::cout << "\n";
+  }
 }
 
 template <typename T>
