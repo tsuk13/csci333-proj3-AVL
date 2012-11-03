@@ -113,11 +113,15 @@ void BST<T>::treePrint(){
   }
   //print
   for(int i = 0; i < size; i++){
+    for(int j = 0; j < twoPow(size - i - 1) - 1; j++)
+      std::cout << " ";
     while(!alNode[i]->empty()){
       if(alNode[i]->front() == 0)
-        std::cout << "X ";
+        std::cout << "X";
       else
-        std::cout << alNode[i]->front()->getValue() << " ";
+        std::cout << alNode[i]->front()->getValue();
+      for(int j = 0; j < twoPow(size - i) - 1; j++)
+        std::cout << " ";
       alNode[i]->pop_front();
     }
     std::cout << "\n";
