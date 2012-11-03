@@ -112,19 +112,46 @@ void BST<T>::treePrint(){
     l->push_back(curLevel + 1);
   }
   //print
-  for(int i = 0; i < size; i++){
-    for(int j = 0; j < twoPow(size - i - 1) - 1; j++)
+  bool slashRound = false;
+  bool slashForward = true;
+  list<Node<T>*>* tmp;
+  for(int i = 1; (i/2) < size; i++){
+    if(slashRound)
+      tmp = new list<Node<T>*>();  //used to keep the stuff
+    for(int j = 0; j < twoPow(size - (i/2) - 1) - 1; j++) //make start spaces
       std::cout << " ";
-    while(!alNode[i]->empty()){
-      if(alNode[i]->front() == 0)
-        std::cout << "X";
-      else
-        std::cout << alNode[i]->front()->getValue();
-      for(int j = 0; j < twoPow(size - i) - 1; j++)
+    while(!alNode[i/2]->empty()){
+      if(alNode[i/2]->front() == 0){  //if node is null
+        if(slashRound){          //if the line being printed is the slash line
+          std::cout << " ";
+        }
+        else{                    //if its the actual printing line
+          std::cout << " ";
+        }
+      }
+      else{                      //if the node exists
+        if(slashRound){          //if its the slash round
+          if(slashForward)       //if its a foward slash
+            std::cout << "/";
+          else                   //if its a backslash
+            std::cout << "\\";   
+        }
+        else{
+          std::cout << alNode[i/2]->front()->getValue();
+        }
+      }
+      if(slashRound)
+        slashForward = !slashForward; // change for the next slash
+      for(int j = 0; (j < twoPow(size - (i/2)) - 1); j++)   //spaces for inbet
         std::cout << " ";
-      alNode[i]->pop_front();
+      if(slashRound)
+        tmp->push_back(alNode[i/2]->front());
+      alNode[i/2]->pop_front();  //pop front
     }
     std::cout << "\n";
+  if(slashRound)
+     alNode[i/2] = tmp;
+  slashRound = !slashRound;
   }
 }
 
