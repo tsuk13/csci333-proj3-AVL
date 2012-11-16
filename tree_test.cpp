@@ -1,22 +1,22 @@
-#include "BST.h"
+#include "AVL.h"
 #include <iostream>
 
 int main() {
-  BST<int>* bst = new BST<int>();
+  AVL<int>* avl = new AVL<int>();
 
-  bst->insert(5);
-  bst->insert(3);
-  bst->insert(2);
-  bst->insert(4);
-  bst->insert(7);
-  bst->print();
+  avl->insert(5);
+  avl->insert(3);
+  avl->insert(2);
+  avl->insert(4);
+  avl->insert(7);
+  avl->print();
   std::cout << "\n";
-  bst->treePrint();
-  bst->remove(5);
-  bst->remove(4);
-  bst->print();
+  avl->treePrint();
+  avl->remove(5);
+  avl->remove(4);
+  avl->print();
   std::cout <<"\n";
-  bst->treePrint();
+  avl->treePrint();
 
 
 }

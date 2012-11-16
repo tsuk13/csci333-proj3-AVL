@@ -1,28 +1,28 @@
-#include "BST.h"
+#include "AVL.h"
 #include <iostream>
 #include <list>
 using std::list;
 
 template <typename T>
-BST<T>::BST() {
+AVL<T>::AVL() {
   root = 0;
 }
 
 template <typename T>
-BST<T>::~BST() {
+AVL<T>::~AVL() {
   
 }
 
 
 template <typename T>
-bool BST<T>::find(T v) {
+bool AVL<T>::find(T v) {
   Node<T>* temp = new Node<T>(v);
   root = temp;  
   return true;
 }
 
 template <typename T>
-void BST<T>::insert(T v) {
+void AVL<T>::insert(T v) {
   Node<T>* temp = new Node<T>(v);
   Node<T>** curr = &root;
 
@@ -37,7 +37,7 @@ void BST<T>::insert(T v) {
 }
 
 template <typename T>
-void BST<T>::remove(T v) {
+void AVL<T>::remove(T v) {
   //find the nodeToRemove
   Node<T>** nodeToRemove = &(root);
   while((*nodeToRemove) != 0 && (*nodeToRemove)->getValue() != v){
@@ -79,12 +79,12 @@ void BST<T>::remove(T v) {
 }
 
 template <typename T>
-void BST<T>::print() {
+void AVL<T>::print() {
   traversalPrint(root);
 }
 
 template <typename T>
-void BST<T>::treePrint(){
+void AVL<T>::treePrint(){
   int size = depth(root, 0);
   list<Node<T>*>** alNode = new list<Node<T>*>*[size];
   for(int i = 0; i < size; i++){
@@ -156,7 +156,7 @@ void BST<T>::treePrint(){
 }
 
 template <typename T>
-int BST<T>::depth(Node<T>* r, int curDepth){
+int AVL<T>::depth(Node<T>* r, int curDepth){
   if(r == 0)
     return curDepth;
   int lc = depth(r->getLeftChild(), curDepth + 1);
@@ -168,7 +168,7 @@ int BST<T>::depth(Node<T>* r, int curDepth){
 }
 
 template <typename T>
-int BST<T>::twoPow(int x){
+int AVL<T>::twoPow(int x){
   if(x == 0)
     return 1;
   else
@@ -176,7 +176,7 @@ int BST<T>::twoPow(int x){
 }
 
 template <typename T>
-void BST<T>::traversalPrint(Node<T>* root) {
+void AVL<T>::traversalPrint(Node<T>* root) {
   if(root != 0) {
     traversalPrint(root->getLeftChild());
     std::cout << root->getValue() << std::endl;
@@ -184,6 +184,6 @@ void BST<T>::traversalPrint(Node<T>* root) {
   }
 }
 
-template class BST<int>;
-template class BST<double>;
-template class BST<std::string>;
+template class AVL<int>;
+template class AVL<double>;
+template class AVL<std::string>;
