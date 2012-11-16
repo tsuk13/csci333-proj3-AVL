@@ -11,6 +11,7 @@ class AVL {
   void traversalPrint(Node<T>* root);
   int depth(Node<T>* r, int curDepth);
   int twoPow(int x);
+  void rotate(Node<T>** crit, int dir);
 
  public:
   AVL<T>();

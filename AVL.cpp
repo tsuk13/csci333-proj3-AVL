@@ -184,6 +184,27 @@ void AVL<T>::traversalPrint(Node<T>* root) {
   }
 }
 
+template <typename T>
+void AVL<T>::rotate(Node<T>** crit, int dir){
+  if(dir == -1){
+    Node<T>* tmpRC = (*crit)->getRightChild();
+    Node<T>* tmpLC = tmpRC->getLeftChild();
+    tmpRC->setLeftChild(*(*crit));
+    (*crit) = tmpRC;
+    tmpRC->getLeftChild()->setRightChild(*tmpLC);
+  }
+  else if(dir == 1){
+    Node<T>* tmpLC = (*crit)->getLeftChild();
+    Node<T>* tmpRC = tmpLC->getRightChild();
+    tmpLC->setRightChild(*(*crit));
+    (*crit) = tmpLC;
+    tmpLC->getRightChild()->setLeftChild(*tmpRC);
+  }
+  else{
+    std::cout << "An error has occured with direction in rotate\n";
+  }
+}
+
 template class AVL<int>;
 template class AVL<double>;
 template class AVL<std::string>;
