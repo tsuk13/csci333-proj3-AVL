@@ -19,6 +19,9 @@ int main() {
   avl->insert(8);
   avl->treePrint();
   std::cout << "\n";
+  avl->insert(9);
+  avl->treePrint();
+  std::cout << "\n";
 
 
 }
