@@ -7,19 +7,19 @@ int main() {
   avl->insert(5);
   avl->treePrint();
   std::cout << "\n";
-  avl->insert(4);
+  avl->insert(3);
   avl->treePrint();
   std::cout << "\n";
   avl->insert(7);
   avl->treePrint();
   std::cout << "\n";
-  avl->insert(6);
+  avl->insert(2);
   avl->treePrint();
   std::cout << "\n";
-  avl->insert(8);
+  avl->insert(4);
   avl->treePrint();
   std::cout << "\n";
-  avl->insert(9);
+  avl->insert(1);
   avl->treePrint();
   std::cout << "\n";
 

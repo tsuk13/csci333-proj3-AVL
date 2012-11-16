@@ -50,9 +50,17 @@ void AVL<T>::insert(T v) {
     if((*nUp)->getBalance() == 0){
       break;
     }
-    if((*nUp)->getBalance() == 2){
+    //balance hits 2
+    else if((*nUp)->getBalance() == 2){
        if(prevDir != -1){ //outside insert
         rotate(nUp, -1);
+        break;
+       }
+    }
+    //balance hits -2
+    else if((*nUp)->getBalance() == -2){
+       if(prevDir != 1){ //outside insert
+        rotate(nUp, 1);
         break;
        }
     }
