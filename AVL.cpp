@@ -46,24 +46,28 @@ void AVL<T>::insert(T v) {
   while(!nodeStack.empty()){
     Node<T>** nUp = nodeStack.front();
     int dir = dirStack.front();
-    (*nUp)->setBalance((*nUp)->getBalance() + dir);
-    if((*nUp)->getBalance() == 0){
+    if((*nUp)->getBalance() == 0)
       break;
-    }
     //balance hits 2
     else if((*nUp)->getBalance() == 2){
        if(prevDir != -1){ //outside insert
-        rotate(nUp, -1);
-        break;
+         rotate(nUp, -1);
+         break;
+       }
+       else{              //inside insert
+         rotate(&((*nUp)->getRightChild()), 1);
+         rotate(nUp, -1);
+         break;
        }
     }
     //balance hits -2
     else if((*nUp)->getBalance() == -2){
        if(prevDir != 1){ //outside insert
-        rotate(nUp, 1);
-        break;
+         rotate(nUp, 1);
+         break;
        }
     }
+    (*nUp)->setHeight((*nUp)->getHeight()+1);
     prevDir = dir;
     nodeStack.pop_front();
     dirStack.pop_front();
@@ -226,9 +230,6 @@ void AVL<T>::rotate(Node<T>** crit, int dir){
     tmpRC->setLeftChild(*(*crit));
     (*crit) = tmpRC;
     tmpRC->getLeftChild()->setRightChild(*tmpLC);
-    //update Balances
-    tmpRC->setBalance(tmpRC->getBalance() - 1);
-    tmpRC->getLeftChild()->setBalance(tmpRC->getLeftChild()->getBalance() - 2);
   }
   else if(dir == 1){
     Node<T>* tmpLC = (*crit)->getLeftChild();
@@ -236,9 +237,6 @@ void AVL<T>::rotate(Node<T>** crit, int dir){
     tmpLC->setRightChild(*(*crit));
     (*crit) = tmpLC;
     tmpLC->getRightChild()->setLeftChild(*tmpRC);
-    //update Balances
-    tmpLC->setBalance(tmpLC->getBalance() + 1);
-    tmpLC->getRightChild()->setBalance(tmpLC->getRightChild()->getBalance() + 2);
   }
   else{
     std::cout << "An error has occured with direction in rotate\n";
