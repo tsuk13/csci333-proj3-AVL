@@ -25,15 +25,33 @@ template <typename T>
 void AVL<T>::insert(T v) {
   Node<T>* temp = new Node<T>(v);
   Node<T>** curr = &root;
+  list<Node<T>**> nodeStack; //keeps track of node path
+  list<int> dirStack; //keeps track of directions of the path
 
+  //main insert
   while (*curr != 0) {
+    nodeStack.push_front(curr);
     if (v < (*curr)->getValue()) {
       curr = &((*curr)->getLeftChild());
+      dirStack.push_front(-1);
     } else if (v > (*curr)->getValue()) {
       curr = &((*curr)->getRightChild());
+      dirStack.push_front(1);
     }
   }
   *curr = temp;
+
+  //balance updating
+  while(!nodeStack.empty()){
+    Node<T>** nUp = nodeStack.front();
+    int dir = dirStack.front();
+    (*nUp)->setBalance((*nUp)->getBalance() + dir);
+    if((*nUp)->getBalance() == 0){
+      break;
+    }
+    nodeStack.pop_front();
+    dirStack.pop_front();
+  }
 }
 
 template <typename T>
