@@ -4,6 +4,7 @@
 template <typename T>
 Node<T>::Node(T v) {
   value = v;
+  bal = 0;
   leftChild = 0;
   rightChild = 0;
 }
@@ -31,6 +32,16 @@ Node<T>*& Node<T>::getRightChild() {
 template <typename T>
 void Node<T>::setRightChild(Node<T>& rc) {
   rightChild = &rc;
+}
+
+template <typename T>
+int Node<T>::getBalance(){
+  return bal;
+}
+
+template <typename T>
+void Node<T>::setBalance(int b){
+  bal = b;
 }
 
 template class Node<int>;
