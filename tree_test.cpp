@@ -5,9 +5,17 @@ int main() {
   AVL<int>* avl = new AVL<int>();
 
   avl->insert(5);
+  avl->treePrint();
+  std::cout << "\n";
   avl->insert(4);
+  avl->treePrint();
+  std::cout << "\n";
   avl->insert(7);
+  avl->treePrint();
+  std::cout << "\n";
   avl->insert(6);
+  avl->treePrint();
+  std::cout << "\n";
   avl->insert(8);
   avl->treePrint();
   std::cout << "\n";

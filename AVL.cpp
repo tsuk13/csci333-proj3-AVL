@@ -155,7 +155,7 @@ void AVL<T>::treePrint(){
             std::cout << "\\";   
         }
         else{
-          std::cout << alNode[i/2]->front()->getValue();
+          std::cout << alNode[i/2]->front()->getValue() << alNode[i/2]->front()->getBalance();
         }
       }
       if(slashRound)
