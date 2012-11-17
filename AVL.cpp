@@ -144,7 +144,6 @@ void AVL<T>::remove(T v) {
     int dir = dirStack.front();
     if((*curN) == 0){
       nStack.pop_front();
-      dirStack.pop_front();
     }
     else{
       fixHeight(*curN);
@@ -231,7 +230,7 @@ void AVL<T>::treePrint(){
             std::cout << "\\";   
         }
         else{
-          std::cout << alNode[i/2]->front()->getValue() << alNode[i/2]->front()->getBalance();
+          std::cout << alNode[i/2]->front()->getValue();
         }
       }
       if(slashRound)
