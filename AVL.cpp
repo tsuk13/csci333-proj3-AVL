@@ -87,10 +87,14 @@ void AVL<T>::remove(T v) {
   Node<T>** nodeToRemove = &(root);
   nStack.push_front(nodeToRemove);
   while((*nodeToRemove) != 0 && (*nodeToRemove)->getValue() != v){
-    if(v < (*nodeToRemove)->getValue())
+    if(v < (*nodeToRemove)->getValue()){
       nodeToRemove = &((*nodeToRemove)->getLeftChild());
-    else if(v > (*nodeToRemove)->getValue())
+      dirStack.push_front(-1);
+    }
+    else if(v > (*nodeToRemove)->getValue()){
       nodeToRemove = &((*nodeToRemove)->getRightChild());
+      dirStack.push_front(1);
+    }
     nStack.push_front(nodeToRemove);
   }
   //case nodetoRemove is not present
@@ -102,12 +106,13 @@ void AVL<T>::remove(T v) {
   //case for no left child
   if((*nodeToRemove)->getLeftChild() == 0){
     (*nodeToRemove) = (*nodeToRemove)->getRightChild();
+    dirStack.push_front(1);
     delete tmp;
-    //update Balance
   }
   //case for no right child
   else if((*nodeToRemove)->getRightChild() == 0){
     (*nodeToRemove) = (*nodeToRemove)->getLeftChild();
+    dirStack.push_front(-1);
     delete tmp;
   }
   //case two childs
@@ -115,9 +120,11 @@ void AVL<T>::remove(T v) {
   else{
     Node<T>** IOP = &((*nodeToRemove)->getLeftChild());
     nStack.push_front(IOP);
+    dirStack.push_front(-1);
     while((*IOP)->getRightChild() != 0){
       IOP = &((*IOP)->getRightChild());
       nStack.push_front(IOP);
+      dirStack.push_front(1);
     }
     //IOP's right subtree becomes what nodeToRemoves was
     (*IOP)->setRightChild(*((*nodeToRemove)->getRightChild()));
@@ -134,8 +141,34 @@ void AVL<T>::remove(T v) {
   }
   while(!nStack.empty()){
     Node<T>** curN = nStack.front();
-    fixHeight(*curN);
-    nStack.pop_front();
+    int dir = dirStack.front();
+    if((*curN) == 0){
+      nStack.pop_front();
+      dirStack.pop_front();
+    }
+    else{
+      fixHeight(*curN);
+      if((*curN)->getBalance() == 2){
+        if(dir == -1){
+          rotate(curN, -1);
+        }
+        else{
+          rotate(&((*curN)->getRightChild()), 1);
+          rotate(curN, -1);
+        }
+      }
+      else if((*curN)->getBalance() == -2){
+        if(dir == 1){
+          rotate(curN, 1);
+        }
+        else{
+          rotate(&((*curN)->getLeftChild()), -1);
+          rotate(curN, 1);
+        }
+      }
+      nStack.pop_front();
+      dirStack.pop_front();
+    }
   }
 }
 
