@@ -118,8 +118,9 @@ void AVL<T>::remove(T v) {
   //case two childs
   //find in order predessesor
   else{
+    std::cout << "two childs case\n";
     Node<T>** IOP = &((*nodeToRemove)->getLeftChild());
-    nStack.push_front(IOP);
+    //nStack.push_front(IOP);
     dirStack.push_front(-1);
     while((*IOP)->getRightChild() != 0){
       IOP = &((*IOP)->getRightChild());
@@ -130,23 +131,40 @@ void AVL<T>::remove(T v) {
     (*IOP)->setRightChild(*((*nodeToRemove)->getRightChild()));
     //IOP's left subtree becomes what nodeToRemoves was
     Node<T>* tmplc = (*IOP)->getLeftChild();
-    (*IOP)->setLeftChild(*((*nodeToRemove)->getLeftChild()));
+    if((*nodeToRemove)->getLeftChild() != (*IOP))
+      (*IOP)->setLeftChild(*((*nodeToRemove)->getLeftChild()));
     //NodeTO REmove's parent pointer gets set to IOP 
     (*nodeToRemove) = (*IOP);
     //IOP's parent points to IOP LeftChild
     (*IOP) = tmplc;
+    /*//remove self loop
+    std::cout << "start trying to remove loop.\n";
+    Node<T>** fix;
+    fix = &((*IOP)->getLeftChild());
+    while((*fix) != (*IOP)){
+      fix = &((*fix)->getRightChild());
+    }
+    (*fix) = 0;
+    std::cout << "finish attempt\n";
+    */
     //nodeToRemove is deleted
     delete tmp;
     //update balance
   }
   while(!nStack.empty()){
+    std::cout  <<"running update loop\n";
     Node<T>** curN = nStack.front();
+    std::cout <<"got front " << (*curN)->getValue() << "\n";
+    std::cout <<"balance: " << (*curN)->getBalance() << "\n";
     int dir = dirStack.front();
+    std::cout <<"got dir " << dir << "\n";
     if((*curN) == 0){
       nStack.pop_front();
     }
     else{
       fixHeight(*curN);
+      std::cout << "height fixed\n";
+      std::cout << "second Balance: " << (*curN)->getBalance() << "\n";
       if((*curN)->getBalance() == 2){
         if(dir == -1){
           rotate(curN, -1);
@@ -165,8 +183,10 @@ void AVL<T>::remove(T v) {
           rotate(curN, 1);
         }
       }
+      std::cout << "about to pop\n";
       nStack.pop_front();
       dirStack.pop_front();
+      std::cout << "popped\n";
     }
   }
 }
@@ -179,6 +199,7 @@ void AVL<T>::print() {
 template <typename T>
 void AVL<T>::treePrint(){
   int size = depth(root, 0);
+  std::cout << "ran depth\n";
   list<Node<T>*>** alNode = new list<Node<T>*>*[size];
   for(int i = 0; i < size; i++){
     alNode[i] = new list<Node<T>*>();
@@ -252,6 +273,7 @@ template <typename T>
 int AVL<T>::depth(Node<T>* r, int curDepth){
   if(r == 0)
     return curDepth;
+  std::cout << r->getValue() << "\n";
   int lc = depth(r->getLeftChild(), curDepth + 1);
   int rc = depth(r->getRightChild(), curDepth + 1);
   if(rc >= lc)
