@@ -8,7 +8,8 @@ template <typename T>
 class AVL {
  private:
   Node<T>* root;
-  void traversalPrint(Node<T>* root);
+  void inOrderTraversalPrint(Node<T>* root);
+  void postOrderTraversalPrint(Node<T>* root);
   int depth(Node<T>* r, int curDepth);
   int twoPow(int x);
   void rotate(Node<T>** crit, int dir);

@@ -156,7 +156,8 @@ void AVL<T>::remove(T v) {
 
 template <typename T>
 void AVL<T>::print() {
-  traversalPrint(root);
+  inOrderTraversalPrint(root);
+  postOrderTraversalPrint(root);
 }
 
 template <typename T>
@@ -252,11 +253,20 @@ int AVL<T>::twoPow(int x){
 }
 
 template <typename T>
-void AVL<T>::traversalPrint(Node<T>* root) {
+void AVL<T>::inOrderTraversalPrint(Node<T>* root) {
   if(root != 0) {
-    traversalPrint(root->getLeftChild());
+    inOrderTraversalPrint(root->getLeftChild());
     std::cout << root->getValue() << std::endl;
-    traversalPrint(root->getRightChild());
+    inOrderTraversalPrint(root->getRightChild());
+  }
+}
+
+template <typename T>
+void AVL<T>::postOrderTraversalPrint(Node<T>* root) {
+  if(root != 0) {
+    postOrderTraversalPrint(root->getLeftChild());
+    postOrderTraversalPrint(root->getRightChild());
+    std::cout << root->getValue() << std::endl;
   }
 }
 

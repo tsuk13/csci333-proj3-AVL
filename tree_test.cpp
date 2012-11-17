@@ -28,6 +28,7 @@ int main() {
   avl->remove(2);
   avl->treePrint();
   std::cout << "\n";
+  avl->print();
 
 
 }
