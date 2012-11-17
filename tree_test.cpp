@@ -26,7 +26,6 @@ int main() {
   avl->treePrint();
   std::cout << "\n";
   avl->remove(5);
-  std::cout << "made it through remove\n";
   avl->treePrint();
   std::cout << "\n";
 
