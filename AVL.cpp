@@ -82,6 +82,7 @@ void AVL<T>::insert(T v) {
 template <typename T>
 void AVL<T>::remove(T v) {
   list<Node<T>**> nStack;
+  list<int> dirStack;
   //find the nodeToRemove
   Node<T>** nodeToRemove = &(root);
   nStack.push_front(nodeToRemove);
@@ -103,45 +104,34 @@ void AVL<T>::remove(T v) {
     (*nodeToRemove) = (*nodeToRemove)->getRightChild();
     delete tmp;
     //update Balance
-    while(!nStack.empty()){
-      Node<T>** curN = nStack.front();
-      fixHeight(*curN);
-      nStack.pop_front();
-    }
-    return;
   }
   //case for no right child
   else if((*nodeToRemove)->getRightChild() == 0){
     (*nodeToRemove) = (*nodeToRemove)->getLeftChild();
     delete tmp;
-    //update balance
-    while(!nStack.empty()){
-      Node<T>** curN = nStack.front();
-      fixHeight(*curN);
-      nStack.pop_front();
-    }
-    return;
   }
   //case two childs
   //find in order predessesor
-  Node<T>** IOP = &((*nodeToRemove)->getLeftChild());
-  nStack.push_front(IOP);
-  while((*IOP)->getRightChild() != 0){
-    IOP = &((*IOP)->getRightChild());
+  else{
+    Node<T>** IOP = &((*nodeToRemove)->getLeftChild());
     nStack.push_front(IOP);
+    while((*IOP)->getRightChild() != 0){
+      IOP = &((*IOP)->getRightChild());
+      nStack.push_front(IOP);
+    }
+    //IOP's right subtree becomes what nodeToRemoves was
+    (*IOP)->setRightChild(*((*nodeToRemove)->getRightChild()));
+    //IOP's left subtree becomes what nodeToRemoves was
+    Node<T>* tmplc = (*IOP)->getLeftChild();
+    (*IOP)->setLeftChild(*((*nodeToRemove)->getLeftChild()));
+    //NodeTO REmove's parent pointer gets set to IOP 
+    (*nodeToRemove) = (*IOP);
+    //IOP's parent points to IOP LeftChild
+    (*IOP) = tmplc;
+    //nodeToRemove is deleted
+    delete tmp;
+    //update balance
   }
-  //IOP's right subtree becomes what nodeToRemoves was
-  (*IOP)->setRightChild(*((*nodeToRemove)->getRightChild()));
-  //IOP's left subtree becomes what nodeToRemoves was
-  Node<T>* tmplc = (*IOP)->getLeftChild();
-  (*IOP)->setLeftChild(*((*nodeToRemove)->getLeftChild()));
-  //NodeTO REmove's parent pointer gets set to IOP 
-  (*nodeToRemove) = (*IOP);
-  //IOP's parent points to IOP LeftChild
-  (*IOP) = tmplc;
-  //nodeToRemove is deleted
-  delete tmp;
-  //update balance
   while(!nStack.empty()){
     Node<T>** curN = nStack.front();
     fixHeight(*curN);
