@@ -81,17 +81,16 @@ void AVL<T>::insert(T v) {
 
 template <typename T>
 void AVL<T>::remove(T v) {
-  list<Node<T>**> preNStack;//trace up to node to be removed
-  list<Node<T>**> postNStack;//trace to in order successor
+  list<Node<T>**> nStack;
   //find the nodeToRemove
   Node<T>** nodeToRemove = &(root);
-  preNStack.push_front(nodeToRemove);
+  nStack.push_front(nodeToRemove);
   while((*nodeToRemove) != 0 && (*nodeToRemove)->getValue() != v){
     if(v < (*nodeToRemove)->getValue())
       nodeToRemove = &((*nodeToRemove)->getLeftChild());
     else if(v > (*nodeToRemove)->getValue())
       nodeToRemove = &((*nodeToRemove)->getRightChild());
-    preNStack.push_front(nodeToRemove);
+    nStack.push_front(nodeToRemove);
   }
   //case nodetoRemove is not present
   if((*nodeToRemove) == 0){
@@ -104,10 +103,10 @@ void AVL<T>::remove(T v) {
     (*nodeToRemove) = (*nodeToRemove)->getRightChild();
     delete tmp;
     //update Balance
-    while(!preNStack.empty()){
-      Node<T>** curN = preNStack.front();
+    while(!nStack.empty()){
+      Node<T>** curN = nStack.front();
       fixHeight(*curN);
-      preNStack.pop_front();
+      nStack.pop_front();
     }
     return;
   }
@@ -116,20 +115,20 @@ void AVL<T>::remove(T v) {
     (*nodeToRemove) = (*nodeToRemove)->getLeftChild();
     delete tmp;
     //update balance
-    while(!preNStack.empty()){
-      Node<T>** curN = preNStack.front();
+    while(!nStack.empty()){
+      Node<T>** curN = nStack.front();
       fixHeight(*curN);
-      preNStack.pop_front();
+      nStack.pop_front();
     }
     return;
   }
   //case two childs
   //find in order predessesor
   Node<T>** IOP = &((*nodeToRemove)->getLeftChild());
-  postNStack.push_front(IOP);
+  nStack.push_front(IOP);
   while((*IOP)->getRightChild() != 0){
     IOP = &((*IOP)->getRightChild());
-    postNStack.push_front(IOP);
+    nStack.push_front(IOP);
   }
   //IOP's right subtree becomes what nodeToRemoves was
   (*IOP)->setRightChild(*((*nodeToRemove)->getRightChild()));
@@ -143,15 +142,10 @@ void AVL<T>::remove(T v) {
   //nodeToRemove is deleted
   delete tmp;
   //update balance
-  while(!postNStack.empty()){
-    Node<T>** curN = postNStack.front();
+  while(!nStack.empty()){
+    Node<T>** curN = nStack.front();
     fixHeight(*curN);
-    postNStack.pop_front();
-  }
-  while(!preNStack.empty()){
-    Node<T>** curN = preNStack.front();
-    fixHeight(*curN);
-    preNStack.pop_front();
+    nStack.pop_front();
   }
 }
 
