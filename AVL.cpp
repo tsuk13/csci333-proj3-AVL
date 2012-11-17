@@ -82,18 +82,18 @@ void AVL<T>::insert(T v) {
 template <typename T>
 void AVL<T>::remove(T v) {
   list<Node<T>**> nStack;
-  list<int> dirStack;
+  //list<int> dirStack;
   //find the nodeToRemove
   Node<T>** nodeToRemove = &(root);
   nStack.push_front(nodeToRemove);
   while((*nodeToRemove) != 0 && (*nodeToRemove)->getValue() != v){
     if(v < (*nodeToRemove)->getValue()){
       nodeToRemove = &((*nodeToRemove)->getLeftChild());
-      dirStack.push_front(-1);
+      //dirStack.push_front(-1);
     }
     else if(v > (*nodeToRemove)->getValue()){
       nodeToRemove = &((*nodeToRemove)->getRightChild());
-      dirStack.push_front(1);
+      //dirStack.push_front(1);
     }
     nStack.push_front(nodeToRemove);
   }
@@ -106,25 +106,23 @@ void AVL<T>::remove(T v) {
   //case for no left child
   if((*nodeToRemove)->getLeftChild() == 0){
     (*nodeToRemove) = (*nodeToRemove)->getRightChild();
-    dirStack.push_front(1);
     delete tmp;
   }
   //case for no right child
   else if((*nodeToRemove)->getRightChild() == 0){
     (*nodeToRemove) = (*nodeToRemove)->getLeftChild();
-    dirStack.push_front(-1);
     delete tmp;
   }
   //case two childs
   //find in order predessesor
   else{
     Node<T>** IOP = &((*nodeToRemove)->getLeftChild());
-    //nStack.push_front(IOP);
-    dirStack.push_front(-1);
+    nStack.push_front(IOP);
+    //dirStack.push_front(-1);
     while((*IOP)->getRightChild() != 0){
       IOP = &((*IOP)->getRightChild());
       nStack.push_front(IOP);
-      dirStack.push_front(1);
+      //dirStack.push_front(1);
     }
     //IOP's right subtree becomes what nodeToRemoves was
     (*IOP)->setRightChild(*((*nodeToRemove)->getRightChild()));
@@ -142,32 +140,38 @@ void AVL<T>::remove(T v) {
   }
   while(!nStack.empty()){
     Node<T>** curN = nStack.front();
-    int dir = dirStack.front();
+    //int dir = dirStack.front();
     if((*curN) == 0){
       nStack.pop_front();
     }
     else{
       fixHeight(*curN);
       if((*curN)->getBalance() == 2){
-        if(dir == -1){
+      //  if(dir == -1){
           rotate(curN, -1);
-        }
-        else{
-          rotate(&((*curN)->getRightChild()), 1);
-          rotate(curN, -1);
-        }
+          std::cout << "lr\n";
+       // }
+       // else{
+       //   rotate(&((*curN)->getRightChild()), 1);
+       //   rotate(curN, -1);
+       //   std::cout << "rrlr\n";
+       // }
       }
       else if((*curN)->getBalance() == -2){
-        if(dir == 1){
+        //if(dir == 1){
           rotate(curN, 1);
-        }
-        else{
-          rotate(&((*curN)->getLeftChild()), -1);
-          rotate(curN, 1);
-        }
+          std::cout << "rr\n";
+        //}
+        // else{
+        //  rotate(&((*curN)->getLeftChild()), -1);
+        //  rotate(curN, 1);
+        //  std::cout << "lrrr\n";
+        // }
       }
+      std::cout << "about to pop\n";
       nStack.pop_front();
-      dirStack.pop_front();
+      //dirStack.pop_front();
+      std::cout << "poped\n";
     }
   }
 }
@@ -231,8 +235,8 @@ void AVL<T>::treePrint(){
             std::cout << "\\";   
         }
         else{
-          std::cout << alNode[i/2]->front()->getValue();
-        }
+          std::cout << alNode[i/2]->front()->getValue() << alNode[i/2]->front()->getBalance() << alNode[i/2]->front()->getHeight();
+}
       }
       if(slashRound)
         slashForward = !slashForward; // change for the next slash
