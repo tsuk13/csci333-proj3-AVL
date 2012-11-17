@@ -25,7 +25,7 @@ int main() {
   avl->insert(7);
   avl->treePrint();
   std::cout << "\n";
-  avl->remove(7);
+  avl->remove(2);
   avl->treePrint();
   std::cout << "\n";
 

@@ -118,11 +118,9 @@ void AVL<T>::remove(T v) {
   else{
     Node<T>** IOP = &((*nodeToRemove)->getLeftChild());
     nStack.push_front(IOP);
-    //dirStack.push_front(-1);
     while((*IOP)->getRightChild() != 0){
       IOP = &((*IOP)->getRightChild());
       nStack.push_front(IOP);
-      //dirStack.push_front(1);
     }
     //IOP's right subtree becomes what nodeToRemoves was
     (*IOP)->setRightChild(*((*nodeToRemove)->getRightChild()));
@@ -140,38 +138,18 @@ void AVL<T>::remove(T v) {
   }
   while(!nStack.empty()){
     Node<T>** curN = nStack.front();
-    //int dir = dirStack.front();
     if((*curN) == 0){
       nStack.pop_front();
     }
     else{
       fixHeight(*curN);
       if((*curN)->getBalance() == 2){
-      //  if(dir == -1){
           rotate(curN, -1);
-          std::cout << "lr\n";
-       // }
-       // else{
-       //   rotate(&((*curN)->getRightChild()), 1);
-       //   rotate(curN, -1);
-       //   std::cout << "rrlr\n";
-       // }
       }
       else if((*curN)->getBalance() == -2){
-        //if(dir == 1){
           rotate(curN, 1);
-          std::cout << "rr\n";
-        //}
-        // else{
-        //  rotate(&((*curN)->getLeftChild()), -1);
-        //  rotate(curN, 1);
-        //  std::cout << "lrrr\n";
-        // }
       }
-      std::cout << "about to pop\n";
       nStack.pop_front();
-      //dirStack.pop_front();
-      std::cout << "poped\n";
     }
   }
 }
@@ -235,7 +213,7 @@ void AVL<T>::treePrint(){
             std::cout << "\\";   
         }
         else{
-          std::cout << alNode[i/2]->front()->getValue() << alNode[i/2]->front()->getBalance() << alNode[i/2]->front()->getHeight();
+          std::cout << alNode[i/2]->front()->getValue();
 }
       }
       if(slashRound)
