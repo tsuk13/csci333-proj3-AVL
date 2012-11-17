@@ -12,6 +12,7 @@ class AVL {
   int depth(Node<T>* r, int curDepth);
   int twoPow(int x);
   void rotate(Node<T>** crit, int dir);
+  void fixHeight(Node<T>* n);
 
  public:
   AVL<T>();

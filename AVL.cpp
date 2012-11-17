@@ -66,6 +66,11 @@ void AVL<T>::insert(T v) {
          rotate(nUp, 1);
          break;
        }
+       else{              //inside insert
+         rotate(&((*nUp)->getLeftChild()), -1);
+         rotate(nUp, 1);
+         break;
+       }
     }
     (*nUp)->setHeight((*nUp)->getHeight()+1);
     prevDir = dir;
@@ -230,6 +235,9 @@ void AVL<T>::rotate(Node<T>** crit, int dir){
     tmpRC->setLeftChild(*(*crit));
     (*crit) = tmpRC;
     tmpRC->getLeftChild()->setRightChild(*tmpLC);
+    //update heights
+    fixHeight(tmpRC->getLeftChild());
+    fixHeight(tmpRC);
   }
   else if(dir == 1){
     Node<T>* tmpLC = (*crit)->getLeftChild();
@@ -237,10 +245,29 @@ void AVL<T>::rotate(Node<T>** crit, int dir){
     tmpLC->setRightChild(*(*crit));
     (*crit) = tmpLC;
     tmpLC->getRightChild()->setLeftChild(*tmpRC);
+    //update heights
+    fixHeight(tmpLC->getRightChild());
+    fixHeight(tmpLC);
   }
   else{
     std::cout << "An error has occured with direction in rotate\n";
   }
+}
+
+template <typename T>
+void AVL<T>::fixHeight(Node<T>* n){
+  if(n == 0)
+    return;
+  int leftH = 0;
+  int rightH = 0;
+  if(n->getLeftChild() != 0)
+    leftH = n->getLeftChild()->getHeight();
+  if(n->getRightChild() != 0)
+    rightH = n->getRightChild()->getHeight();
+  if (leftH > rightH)
+    n->setHeight(leftH + 1);
+  else
+    n->setHeight(rightH + 1);
 }
 
 template class AVL<int>;
